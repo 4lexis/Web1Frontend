@@ -1,0 +1,50 @@
+<div>
+    <h4>List of all themes in subforum:</h4>
+    <ul class="list-group">
+        <li class="list-group-item list-group-item-info" *ngFor="let theme of themes">
+
+            <div class="d-flex w-100 justify-content-between">
+                <small>author: {{theme.Author.Name + " " +theme.Author.LastName}}</small>
+            </div>
+            <p class="mb-1">{{theme.Title}}</p>
+            <button class="btn btn-info" (click)=collapseAll(theme.Id) data-toggle="collapse" [attr.data-target]="'#' + theme.Id">Read</button>
+
+            <div id={{theme.Id}} class="collapse">
+                <p> <small><small><small>{{theme.Text}} </small></small>
+                    </small>
+                </p>
+                <p> <a href={{theme.Link}}><small><small><small>{{theme.Link}}</small></small></small></a></p>
+                <p><img src={{theme.Image}}/></p>
+
+                <small>created: {{theme.CreationDate}}</small>
+                <small><font color="green">likes: {{theme.Likes}}</font> <font color="red">dislikes: {{theme.Dislikes}}</font></small>
+
+                <div>
+                    <button (click)=like(theme) class="btn btn-success">Like</button>
+                    <button (click)=dislike(theme) class="btn btn-danger">Dislike</button>
+                    <button class="btn btn-primary" (click)=getSpecificComments(theme) data-toggle="collapse" [attr.data-target]="'#comments' + theme.Id">See all comments</button>
+                </div>
+            </div>
+
+            <div id=comments{{theme.Id}} class="collapse">
+                <br> Comments:
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-warning" *ngFor="let comment of specificComments">
+                        {{comment.Content}}
+                        <br>
+                        <small><small>{{comment.Author.Name}} {{comment.Author.LastName}}</small></small>
+                        <br>
+                        <small><small>date: {{comment.TimeStamp}}</small></small>
+                        <small><small><font color="green">likes: {{comment.Likes}}</font> <font color="red">dislikes: {{comment.Dislikes}}</font></small></small>
+                        <br>
+                        <button (click)=likeComment(comment) class="btn btn-success btn-xs">Like</button>
+                        <button (click)=dislikeComment(comment) class="btn btn-danger btn-xs">Dislike</button>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+    <p>
+        <button [disabled]="loading" [routerLink]="['/home']" class="btn btn-primary">Go to home</button>
+    </p>
+</div>
