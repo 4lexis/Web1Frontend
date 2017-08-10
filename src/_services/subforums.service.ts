@@ -15,7 +15,7 @@ export class SubforumsService {
     }
 
     getAll() : Promise<Subforum[]> {
-        return this.http.get(baseUrl + '/api/subforums').toPromise().then(response => { return response.json() as Subforum[]; }).catch(this.handleError);
+        return this.http.get(baseUrl + '/api/subforums?$expand=ResponsibleModerator').toPromise().then(response => { return response.json() as Subforum[]; }).catch(this.handleError);
     }
 
     getForum(): Promise<Subforum>{

@@ -37,7 +37,6 @@ export class HomeComponent {
     ngOnInit() {
         this.loadAllSubforums();
         this.user = sessionStorage.getItem("user");        
-        debugger
         if (this.user != null)
         {
             this.option = "Logout";
@@ -49,12 +48,8 @@ export class HomeComponent {
         else
         {
             this.option = "Login";
+            this.name = "Guest";
         }
-    }
-
-    private showInfo(username: string)
-    {
-        alert(username);
     }
 
     private openSubforum(name:string)
@@ -105,7 +100,7 @@ export class HomeComponent {
     }
     logout()
     {
-        sessionStorage.removeItem("user");
+        sessionStorage.clear();
         this.router.navigate(['/login']);
     }
 

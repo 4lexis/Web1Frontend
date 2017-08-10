@@ -1,13 +1,13 @@
 <div>
     <h4>List of all themes in subforum:</h4>
     <ul class="list-group">
-        <li class="list-group-item list-group-item-info" *ngFor="let theme of themes">
+        <li class="list-group-item list-group-item-active" *ngFor="let theme of themes">
 
             <div class="d-flex w-100 justify-content-between">
                 <small>author: {{theme.Author.Name + " " +theme.Author.LastName}}</small>
             </div>
             <p class="mb-1">{{theme.Title}}</p>
-            <button class="btn btn-info" (click)=collapseAll(theme.Id) data-toggle="collapse" [attr.data-target]="'#' + theme.Id">Read</button>
+            <button class="btn btn-primary" (click)=collapseAll(theme.Id) data-toggle="collapse" [attr.data-target]="'#' + theme.Id">Read</button>
 
             <div id={{theme.Id}} class="collapse">
                 <p> <small><small><small>{{theme.Text}} </small></small>
