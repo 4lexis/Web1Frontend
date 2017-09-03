@@ -1,0 +1,31 @@
+<form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && postTheme()" #f="ngForm" novalidate>
+    <fieldset>
+        <h3>Post a theme:</h3>
+        <div class="form-group">
+            <label for="select">Theme type</label>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted }">
+                <select class="form-control" id="select" (change)="onChange($event.target.value)">
+                            <option>Text</option>
+                            <option>Image</option>
+                            <option>Link</option>
+                        </select>
+            </div>
+            <br>
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !title.valid }">
+                <label for="title">Title</label>
+                <div *ngIf="f.submitted && !title.valid" class="help-block">title is required</div>
+                <input type="text" class="form-control" name="title" [(ngModel)]="model.title" #title="ngModel" required />
+
+            </div>
+
+            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !content.valid }">
+                <label for="content">Content</label>
+                <div *ngIf="f.submitted && !content.valid" class="help-block">Content is required</div>
+                <textarea type="text" class="form-control" name="content" [(ngModel)]="model.content" #content="ngModel" rows="3" required> </textarea>
+            </div>
+            <br>
+            <button class="btn btn-primary" [routerLink]="['/themes']">Back</button> &nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </fieldset>
+</form>

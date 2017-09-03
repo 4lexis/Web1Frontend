@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { User, Subforum, Theme, Comment, Like, LikeComment } from '../_models';
+import { User, Subforum, Comment, Like, LikeComment } from '../_models';
 
 import { AlertService, UserService, SubforumsService, ThemesService, CommentsService } from '../_services/index';
+import { Theme } from '../_models/theme';
 
 @Component({
     moduleId: module.id,
@@ -19,6 +20,8 @@ export class ThemesComponent {
     specificComments: Comment[];
     likes: Like[];
     commentLikes: LikeComment[];
+    postThemeModel: any;
+    role: number;
 
     constructor(
         private router: Router,
@@ -27,12 +30,21 @@ export class ThemesComponent {
         private themesService: ThemesService,
         private commentsService: CommentsService) { }
 
-    ngOnInit() {
+    ngOnInit() {        
         this.getThemesOfSubforum();
         this.getComments();
         this.getLikes();
         this.getCommentLikes();
-
+        debugger
+        var admin = JSON.parse(sessionStorage.getItem("user"));
+        if(admin != null)
+        {
+            this.role = Number.parseInt(admin.Role);
+        }
+        else
+        {
+            this.role = 2;    
+        }        
         this.user = sessionStorage.getItem("user");
         this.userObject = JSON.parse(sessionStorage.getItem("user"));
     }
@@ -79,10 +91,35 @@ export class ThemesComponent {
     getThemesOfSubforum() {
         this.themesService.getAll().then(
             themes => {
-                this.themes = themes.filter(t => t.SubForum.Name == localStorage.getItem("subforum"));
+                this.themes = themes.filter(t => t.SubForum.Name == sessionStorage.getItem("subforum"));
             });
+    }
 
+    deleteTheme(thema:Theme)
+    {        
+        this.themesService.delete(thema)
+        .subscribe(
+                data => {
+                    this.alertService.success('Theme deleted', false);
+                    this.router.navigate(['/themes']);
+                    this.getThemesOfSubforum();
+                },
+                error => {
+                    this.alertService.error('Error while deleting theme');
+                });
+    }    
 
+    makeComment(themeId: number)
+    {
+        if(sessionStorage.getItem("user") != null)
+        {
+            sessionStorage.setItem("CommentThemeId",themeId.toString());
+            this.router.navigate(['/makecomment']);
+        }
+        else
+        {
+            this.alertService.error("You can not post comments unlogged");
+        }
     }
 
     like(theme: Theme) {

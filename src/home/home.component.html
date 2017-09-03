@@ -14,6 +14,9 @@
                     <li *ngIf="option == 'Logout'">
                         <a (click)=editUsers()>Users</a>
                     </li>
+                    <li *ngIf="option == 'Logout'">
+                        <a (click)=showMessages()>Messages</a>
+                    </li>
                     <li><a (click)=logout()>{{option}}</a></li>
                 </ul>
             </div>
@@ -26,7 +29,7 @@
         <h4>List of all subforums:</h4>
         <div>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-info" (click)=openSubforum(subforum.Name) *ngFor="let subforum of subforums">
+                <li class="list-group-item list-group-item-info" (click)=openSubforum(subforum) *ngFor="let subforum of subforums">
                     <b>{{subforum.Name}} </b>
                     <br> <small>description: {{subforum.Description}}</small>
                     <br> <i> <small >moderator: {{subforum.ResponsibleModerator.Name + " " + subforum.ResponsibleModerator.LastName}}</small>   </i>

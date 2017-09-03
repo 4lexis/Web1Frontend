@@ -52,10 +52,23 @@ export class HomeComponent {
         }
     }
 
-    private openSubforum(name:string)
+    showMessages()
     {
-        localStorage.setItem("subforum", name);
+        if (this.user != null)
+         {
+            this.router.navigate(['/messages']);
+         }
+         else
+         {
+             this.alertService.error("You are not logged in!");
+         }
 
+    }
+
+    private openSubforum(sub:Subforum)
+    {
+        sessionStorage.setItem("subforum", sub.Name);
+        sessionStorage.setItem("subforumId", sub.Id.toString());
         this.router.navigate(['/themes']);
     }
 

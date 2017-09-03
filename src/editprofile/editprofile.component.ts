@@ -37,6 +37,7 @@ export class EditProfileComponent implements OnInit {
 
     editData()
     {
+        debugger
         this.user.Name = this.model.firstName;
         this.user.LastName = this.model.lastName;
         this.user.Username = this.model.username;

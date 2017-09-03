@@ -19,6 +19,14 @@ export class CommentsService {
         return this.http.put(baseUrl + '/api/comments/' + comment.Id, comment).map((response: Response) => response.json());
     }
 
+    create(comment: Comment) {
+        return this.http.post(baseUrl + '/api/comments', comment).map((response: Response) => response.json());
+    }    
+
+    delete(id: number) {
+        return this.http.delete('/api/comments/' + id).map((response: Response) => response.json());
+    }
+
 
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error);

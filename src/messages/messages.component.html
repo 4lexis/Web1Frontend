@@ -1,0 +1,52 @@
+<div>
+    <div class="col-md-6 col-md-offset-3">
+        <h2>New message:</h2>
+        <div>
+            <label>Receiver:</label>
+            <select class="form-control" id="select" [(ngModel)]=selectedUser>
+                <option *ngFor="let user of users" [ngValue]="user">{{user.Username}}</option>
+                </select>
+        </div>
+        <div>
+            <label for="firstName">Message:</label>
+            <textarea name="text" rows="5" class="form-control" name="message" [(ngModel)]="message"></textarea>
+        </div>
+
+
+        <div>
+            <button class="btn btn-primary" [routerLink]="['/home']">Back</button> &nbsp;
+            <button [disabled]="loading" class="btn btn-primary" (click)=onPostMessage()>Send</button>
+            <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
+            <button class="btn btn-info" data-toggle="collapse" data-target="#sentMessages">Sent messages</button>
+            <button class="btn btn-info" data-toggle="collapse" data-target="#receivedMessages" (click)=getReceivedMessages()>Received messages</button>
+            <img *ngIf="loadingMessages" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+            />
+        </div>
+    </div>
+
+    <div class="col-md-6 col-md-offset-3">
+        <div id="sentMessages" class="collapse">
+            <ul class="list-group">
+                <h4>Sent messages:</h4>
+                <li class="list-group-item list-group-item-info" *ngFor="let message of sentMessages">
+                    <b>To: {{message.Receiver.Username}} </b>
+                    <br> <small>{{message.Text}}</small>
+                    <br> <i> <small >{{message.Readed ? 'Seen' : 'Not seen'}}</small></i>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="col-md-6 col-md-offset-3">
+        <div id="receivedMessages" class="collapse">
+            <ul class="list-group">
+                <h4>Received messages:</h4>
+                <li class="list-group-item list-group-item-info" *ngFor="let message of receivedMessages">
+                    <b>From: {{message.Sender.Username}} </b>
+                    <br> <small>{{message.Text}}</small>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,12 @@
+<form class="form-horizontal" name="form" (ngSubmit)="f.form.valid && comment()" #f="ngForm" novalidate>
+    <fieldset>
+        <h3>Leave a comment:</h3>
+        <div class="form-group">
+            <div *ngIf="f.submitted && !content.valid" class="help-block">Text is required</div>
+            <textarea class="form-control" name="conent" [(ngModel)]="model.content" #content="ngModel" required> </textarea> <br>
+
+            <button class="btn btn-primary" [routerLink]="['/themes']">Back</button> &nbsp;&nbsp;&nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </fieldset>
+</form>

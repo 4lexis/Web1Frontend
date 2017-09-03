@@ -19,8 +19,16 @@ export class ThemesService {
         return this.http.put(baseUrl + '/api/themes/' + theme.Id, theme).map((response: Response) => response.json());
     }
 
+    delete(theme: Theme){
+        return this.http.delete(baseUrl+ '/api/themes/'+ theme.Id).map((response: Response)=> response.json());
+    }
+
     updateLike(like:Like) {
         return this.http.put(baseUrl + '/api/likethemes/' + like.Id, like).map((response: Response) => response.json());
+    }
+
+    create(theme: Theme) {        
+        return this.http.post(baseUrl + '/api/themes/', theme).map((response: Response) => response.json());
     }
 
     getLikes(): Promise<Like[]> {
@@ -41,6 +49,10 @@ export class ThemesService {
 
     setCommentLike(like:LikeComment) {
         return this.http.post(baseUrl + '/api/likecomments/' + like.Id, like).map((response: Response) => response.json());
+    }
+
+    uploadPic(pic: any) {
+        return this.http.post('http://localhost:1172/api/themes/upload', pic).map((response: Response) => response.json());
     }
 
   private handleError(error: any): Promise<any> {
