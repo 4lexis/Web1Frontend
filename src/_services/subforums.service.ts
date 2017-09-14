@@ -31,7 +31,7 @@ export class SubforumsService {
     }
 
     delete(id: number) {
-        return this.http.delete('/api/subforums/' + id).map((response: Response) => response.json());
+        return this.http.delete(baseUrl +'/api/subforums/' + id).map((response: Response) => response.json());
     }
 
     getFollowers(): Promise<FollowsSubforum[]> {
@@ -41,6 +41,11 @@ export class SubforumsService {
     followSubforum(subforum: FollowsSubforum) 
     {
        return this.http.post(baseUrl + '/api/followsubforums/' + subforum.Id, subforum).map((response: Response) => response.json());
+    }
+
+    unfollowSubforum(subforum: FollowsSubforum) 
+    {
+       return this.http.delete('http://localhost:1172/api/followsubforums/unfollow/'+subforum.Subforum_Id + '/' + subforum.User_Id).map((response: Response) => response.json());
     }
 
 

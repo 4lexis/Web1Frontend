@@ -18,11 +18,30 @@
 
             </div>
 
-            <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !content.valid }">
+            <div *ngIf="typeTheme != 'Image'" class="form-group" [ngClass]="{ 'has-error': f.submitted && !content.valid }">
                 <label for="content">Content</label>
                 <div *ngIf="f.submitted && !content.valid" class="help-block">Content is required</div>
                 <textarea type="text" class="form-control" name="content" [(ngModel)]="model.content" #content="ngModel" rows="3" required> </textarea>
             </div>
+
+            <!--image-->
+            <div *ngIf="typeTheme == 'Image'" class="image_container">
+                <div class="container block-margin">
+                    <div>
+                        <div style="display: inline-block;width: 100%">
+                            <input #file type="file" ng2FileSelect [uploader]="uploader" /><br/>
+                        </div>
+                        <div *ngFor="let item of uploader.queue" style="margin-bottom: 5px;margin-top: 5px">
+                            <div>
+                                <span><strong>{{ item?.file?.name }}</strong></span>
+                            </div>
+                            <button type="Button" (click)="upload(item)"> Upload</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--end of image-->
+
             <br>
             <button class="btn btn-primary" [routerLink]="['/themes']">Back</button> &nbsp;&nbsp;&nbsp;&nbsp;
             <button type="submit" class="btn btn-primary">Submit</button>

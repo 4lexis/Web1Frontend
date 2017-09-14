@@ -44,7 +44,10 @@
                 <h4>Received messages:</h4>
                 <li class="list-group-item list-group-item-info" *ngFor="let message of receivedMessages">
                     <b>From: {{message.Sender.Username}} </b>
+                    <br> <i> <small >{{message.Readed ? 'Seen' : 'Not seen'}}</small></i>
                     <br> <small>{{message.Text}}</small>
+
+                    <button *ngIf="!(message.Readed)" (click)=readMessage(message) class="btn btn-warning btn-xs" style="float: right;">Mark as seen</button>
                 </li>
             </ul>
         </div>

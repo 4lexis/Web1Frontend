@@ -8,6 +8,8 @@ import { Like } from '../_models/like';
 import { LikeComment } from '../_models/likecomment';
 import { FollowsSubforum } from '../_models/followssubforum';
 import { ThemesService } from '../_services/themes.service';
+import { Pipe, PipeTransform } from '@angular/core';
+import { ForumPipe } from '../filter/forumpipe';
 
 @Component({
     moduleId: module.id,
@@ -34,7 +36,7 @@ export class HomeComponent {
         private subforumService: SubforumsService,
         private themesService: ThemesService) { }
 
-    ngOnInit() {
+    ngOnInit() {        
         this.loadAllSubforums();
         this.user = sessionStorage.getItem("user");        
         if (this.user != null)
@@ -47,9 +49,33 @@ export class HomeComponent {
         }
         else
         {
+            
             this.option = "Login";
             this.name = "Guest";
         }
+    }
+
+    deleteSubforum(forum: Subforum)
+    {
+        var currentUser = JSON.parse(sessionStorage.getItem("user"));
+        if(currentUser.Role != 0)
+        {
+            this.alertService.error("No privilage to delete subforum", true);
+                                    
+        }
+        else
+        {
+            this.subforumService.delete(forum.Id).subscribe(
+                    data => {
+                        this.alertService.success("Subforum deleted", true);
+                        this.router.navigate(['/home']);
+                    },
+                    error => {
+                        this.alertService.error("Error while trying to delete subforum.", true);
+                        this.router.navigate(['/home']);
+                    });
+        }
+        this.router.navigate(['/home']);
     }
 
     showMessages()
@@ -99,8 +125,7 @@ export class HomeComponent {
 
     editProfile()
     {
-
-        debugger
+        
         if (this.user != null)
          {
             this.router.navigate(['/profile']);
@@ -139,22 +164,22 @@ export class HomeComponent {
 
     editUsers()
     {
-        if(sessionStorage.length == 0)
-        {
-            this.alertService.error("No premission to enter while unlogged");
-        }
-        else
-        {
-            var admin = JSON.parse(sessionStorage.getItem("user"));
-            if(admin.Role == 0)
-            {
-                this.router.navigate(['/userroles']);
-            }
-            else
-            {
-                this.alertService.error("No premission to enter");
-            }
-        }
+        // if(sessionStorage.length == 0)
+        // {
+        //     this.alertService.error("No premission to enter while unlogged");
+        // }
+        // else
+        // {
+        //     var admin = JSON.parse(sessionStorage.getItem("user"));
+        //     if(admin.Role == 0)
+        //     {
+                 this.router.navigate(['/userroles']);
+        //     }
+        //     else
+        //     {
+        //         this.alertService.error("No premission to enter");
+        //     }
+        // }
     }
 
     followSubforum(subforum: Subforum)
@@ -168,10 +193,36 @@ export class HomeComponent {
 
             this.subforumService.followSubforum(follow).subscribe(
                  data => {
-                     this.router.navigate(['/home']);
+                     this.alertService.success("Success following subforum", true);
+                     this.router.navigate(['/home']);                     
                 },
                 error => {
                     this.alertService.error("You are already following this subforum.", true);
+                    this.router.navigate(['/home']);
+                });
+        }
+
+        else
+        {
+             this.alertService.error("You are not logged in!");
+        }
+    }
+
+    unfollowSubforum(subforum: Subforum)
+    {        
+        if (this.user != null )
+        {   
+            debugger
+            var unfollow = new FollowsSubforum();
+            unfollow.Subforum_Id = subforum.Id;
+            unfollow.User_Id = this.loggedUser.Id;
+            this.subforumService.unfollowSubforum(unfollow).subscribe(
+                 data => {
+                     this.alertService.success("Success unfollowing subforum", true);
+                     this.router.navigate(['/home']);
+                },
+                error => {
+                    this.alertService.error("You are not following this subforum.", true);
                     this.router.navigate(['/home']);
                 });
         }

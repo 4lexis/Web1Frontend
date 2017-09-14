@@ -7,6 +7,10 @@ import { SubforumsService } from '../_services/subforums.service';
 import { User } from '../_models/user';
 import { ThemesService } from '../_services/themes.service';
 import { Theme } from '../_models/theme';
+import { FileUploader } from 'ng2-file-upload';
+import { Message } from '../_models/message';
+
+const qwe = "http://localhost:1172/api/themes/image/upload";
 
 @Component({
     moduleId: module.id,
@@ -14,19 +18,32 @@ import { Theme } from '../_models/theme';
 })
 
 export class PostThemeComponent implements OnInit {
-    model: any = {};      
-    // @Input() multiple: boolean = false;
-    // @ViewChild('fileInput') inputEl: ElementRef;
+
+    model: any = {};
     typeTheme: string;    
+    uploadedFiles: any[] = [];
+    public uploader = new FileUploader("");
+    thema = new Theme();
 
     constructor(
         private route: ActivatedRoute,
         private router: Router,
         private themeService: ThemesService,
-        private alertService: AlertService) { }
+        private alertService: AlertService) 
+        {             
+             this.uploader = new FileUploader({ url: qwe}); 
+        }
 
-    ngOnInit() {
+    ngOnInit() {        
         this.typeTheme="Text";
+        this.uploader.onCompleteItem = (item:any, response:any, status:any, headers:any) => {
+        if(response != null)
+        {
+            this.thema.Image = JSON.parse(response);
+            this.alertService.success('Picture uploaded');
+        }
+        };
+                    
     }
     onChange(deviceValue)
     {        
@@ -35,53 +52,35 @@ export class PostThemeComponent implements OnInit {
     
     postTheme()
     {        
-        var thema = new Theme();
+        
         var auth = JSON.parse(sessionStorage.getItem("user"));
-        thema.Author_Id = auth.Id;
-        thema.SubForum_Id = Number(sessionStorage.getItem("subforumId"));
-        thema.Likes = 0;
-        thema.Dislikes = 0;
-        thema.CreationDate = new Date();        
-        thema.Title = this.model.title;
+        this.thema.Author_Id = auth.Id;
+        this.thema.SubForum_Id = Number(sessionStorage.getItem("subforumId"));
+        this.thema.Likes = 0;
+        this.thema.Dislikes = 0;
+        this.thema.CreationDate = new Date();        
+        this.thema.Title = this.model.title;
         
         var select_value = (<HTMLInputElement>document.getElementById('select')).value;
         if(select_value == "Text")
         {
-            debugger
-            thema.Text = this.model.content;
-            thema.Link = null;
-            thema.Image = null;
+            this.thema.Text = this.model.content;
+            this.thema.Link = null;
+            this.thema.Image = null;
         }
         else if(select_value == "Link")
         {
-            thema.Text = null;
-            thema.Link = this.model.content;
-            thema.Image = null;
+            this.thema.Text = null;
+            this.thema.Link = this.model.content;
+            this.thema.Image = null;
         }
         else //image
         {
-            // thema.Text = null;
-            // thema.Link = null;
-            // debugger
-            // let inputEl: HTMLInputElement = this.inputEl.nativeElement;
-            // let fileCount: number = inputEl.files.length;
-            // let formData = new FormData();
-            // //thema.Image = "pic/" + inputEl.files.item(0).name;
-            // formData.append('file',inputEl.files.item(0));
-            // var options = { content: formData };
-
-            // //poziv servisa
-            // this.themeService.uploadPic(options)
-            // .subscribe(
-            //     data => {
-            //         this.alertService.success('Picture uploaded', false);                
-            //     },
-            //     error => {
-            //         this.alertService.error('Error while posting picture');
-            //     });             
+             this.thema.Text = null;
+             this.thema.Link = null;            
         }
 
-        this.themeService.create(thema)
+        this.themeService.create(this.thema)
             .subscribe(
                 data => {                    
                     this.alertService.success('New theme posted successful', true);
@@ -91,6 +90,12 @@ export class PostThemeComponent implements OnInit {
                     debugger
                     this.alertService.error('Error while posting new theme, empty field or name wasnt unique');
                 });
+    }
+
+    upload(param)
+    {
+        param.withCredentials = false;
+        param.upload();
     }    
 
 }

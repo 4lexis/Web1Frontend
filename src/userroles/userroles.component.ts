@@ -5,6 +5,8 @@ import { InlineEditorComponent } from 'ng2-inline-editor';
 import { User } from '../_models/user';
 import { UserService } from '../_services/user.service';
 import { AlertService } from '../_services/alert.service';
+import { Pipe, PipeTransform } from '@angular/core';
+import { FilterPipe } from '../filter/pipe';
 
 @Component({
   moduleId: module.id,
@@ -15,6 +17,7 @@ export class UserRolesComponent implements OnInit {
 
   model: any = {};
   users: Array<User>;
+  role: number;
   editableSelectOptions =[
     {value: 0, text: 'Admin'},
     {value: 1, text: 'Moderator'},
@@ -27,6 +30,15 @@ export class UserRolesComponent implements OnInit {
 
   ngOnInit() {
     this.getUsers();
+    var admin = JSON.parse(sessionStorage.getItem("user"));
+        if(admin != null)
+        {
+            this.role = Number.parseInt(admin.Role);
+        }
+        else
+        {
+            this.role = 2;    
+        }
   }
 
   getUsers() {

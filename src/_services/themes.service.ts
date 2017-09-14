@@ -28,7 +28,7 @@ export class ThemesService {
     }
 
     create(theme: Theme) {        
-        return this.http.post(baseUrl + '/api/themes/', theme).map((response: Response) => response.json());
+        return this.http.post(baseUrl + '/api/themes/posttheme/', theme).map((response: Response) => response.json());
     }
 
     getLikes(): Promise<Like[]> {

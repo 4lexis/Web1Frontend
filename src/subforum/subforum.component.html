@@ -17,6 +17,24 @@
             <div *ngIf="f.submitted && !rules.valid" class="help-block">Rules are required</div>
         </div>
 
+        <!--image-->
+        <div class="image_container">
+            <div class="container block-margin">
+                <div>
+                    <div style="display: inline-block;width: 100%">
+                        <input #file type="file" ng2FileSelect [uploader]="uploader" /><br/>
+                    </div>
+                    <div *ngFor="let item of uploader.queue" style="margin-bottom: 5px;margin-top: 5px">
+                        <div>
+                            <span><strong>{{ item?.file?.name }}</strong></span>
+                        </div>
+                        <button type="Button" (click)="upload(item)"> Upload</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end of image-->
+
         <div class="form-group">
 
             <button [disabled]="loading" class="btn btn-primary">Post</button>

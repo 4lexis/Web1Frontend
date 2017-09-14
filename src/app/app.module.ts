@@ -27,6 +27,12 @@ import { PostThemeComponent } from '../posttheme/posttheme.component';
 import { MessagesService } from '../_services/messages.service';
 import { MessagesComponent } from '../messages/messages.component';
 
+import { FileSelectDirective, FileDropDirective, FileUploader } from 'ng2-file-upload/ng2-file-upload';
+import { FilterPipe } from '../filter/pipe';
+import { ForumPipe } from '../filter/forumpipe';
+import { ThemePipe } from '../filter/themepipe';
+
+
 
 @NgModule({
     imports: [
@@ -49,7 +55,12 @@ import { MessagesComponent } from '../messages/messages.component';
         ThemesComponent,
         PostThemeComponent,
         MakeCommentComponent,
-        MessagesComponent
+        MessagesComponent,
+        FileSelectDirective,
+        FileDropDirective,
+        FilterPipe,
+        ForumPipe,
+        ThemePipe
 
     ],
     providers: [        

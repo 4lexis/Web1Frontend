@@ -3,19 +3,19 @@
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <a class="navbar-brand">Multimedia boards</a>
+                    <a class="navbar-brand">(｡◕‿◕｡)</a>
                 </div>
                 <ul class="nav navbar-nav">
                     <li *ngIf="option == 'Logout'"><a (click)=postSubforum()>Post sub forum</a></li>
                     <li class="active"><a href="/home">Home</a></li>
-                    <li *ngIf="option == 'Logout'"><a href="#">Saved subforums</a></li>
-                    <li *ngIf="option == 'Logout'"><a href="#">Saved themes</a></li>
+                    <!--<li *ngIf="option == 'Logout'"><a href="#">Saved subforums</a></li>
+                    <li *ngIf="option == 'Logout'"><a href="#">Saved themes</a></li>-->
                     <li *ngIf="option == 'Logout'"><a (click)=editProfile()>Edit profile</a></li>
                     <li *ngIf="option == 'Logout'">
-                        <a (click)=editUsers()>Users</a>
+                        <a (click)=editUsers()>🙌</a>
                     </li>
                     <li *ngIf="option == 'Logout'">
-                        <a (click)=showMessages()>Messages</a>
+                        <a (click)=showMessages()>✉︎</a>
                     </li>
                     <li><a (click)=logout()>{{option}}</a></li>
                 </ul>
@@ -23,17 +23,24 @@
         </nav>
     </div>
 
-    <div class="col-md-6 col-md-offset-3">
-        <h2>Hello back {{name}}!</h2>
-        <p>Welcome to your board.</p>
-        <h4>List of all subforums:</h4>
+    <div class="col-md-7 col-md-offset-1">
+        <h3>Hi {{name}} •ᴗ•</h3> <br/>
+        <h4>List of all subforums: ಠᴗಠ</h4>
+        <input type="text" [(ngModel)]="queryString" id="search" placeholder="Search by name"> &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" [(ngModel)]="arg1" id="search2" placeholder="Search by description"> &nbsp;&nbsp;&nbsp;&nbsp;
+        <input type="text" [(ngModel)]="arg2" id="search3" placeholder="Search by mod. name">
+
         <div>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-info" (click)=openSubforum(subforum) *ngFor="let subforum of subforums">
+                <br/>
+                <li class="list-group-item list-group-item-info" (click)=openSubforum(subforum) *ngFor="let subforum of subforums | ForumPipe: queryString:arg1:arg2">
+                    <img src="{{subforum.Image}}" style="width: 10%; height: 10%" /> &nbsp;&nbsp;&nbsp;
                     <b>{{subforum.Name}} </b>
                     <br> <small>description: {{subforum.Description}}</small>
                     <br> <i> <small >moderator: {{subforum.ResponsibleModerator.Name + " " + subforum.ResponsibleModerator.LastName}}</small>   </i>
-                    <br><button (click)=followSubforum(subforum) class="btn btn-primary btn-xs">Follow</button>
+                    <br><button *ngIf="name != 'Guest'" (click)=followSubforum(subforum) class="btn btn-primary btn-xs">Follow</button> &nbsp;&nbsp;&nbsp;
+                    <button *ngIf="name != 'Guest'" (click)=unfollowSubforum(subforum) class="btn btn-primary btn-xs">Unfollow</button> &nbsp;&nbsp;&nbsp;
+                    <button *ngIf="name != 'Guest'" (click)=deleteSubforum(subforum) class="btn btn-danger btn-xs">Delete</button>
                 </li>
             </ul>
 

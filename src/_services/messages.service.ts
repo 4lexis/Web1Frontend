@@ -19,6 +19,10 @@ export class MessagesService {
         return this.http.post(baseUrl + '/api/messages', message).map((response: Response) => response.json());
     }
 
+    update(message: Message){
+        return this.http.put(baseUrl + '/api/messages/' + message.Id, message).map((response:Response) => response.json());
+    }
+
     private handleError(error: any): Promise<any> {
         console.error('An error occurred', error);
         return Promise.reject(error.message || error);

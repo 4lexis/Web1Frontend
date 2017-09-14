@@ -24,7 +24,7 @@ export class CommentsService {
     }    
 
     delete(id: number) {
-        return this.http.delete('/api/comments/' + id).map((response: Response) => response.json());
+        return this.http.delete(baseUrl + '/api/comments/' + id).map((response: Response) => response.json());
     }
 
 

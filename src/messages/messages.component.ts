@@ -75,7 +75,7 @@ export class MessagesComponent implements OnInit {
 
     getReceivedMessages() {
         this.loadingMessages = true;
-
+        this.receivedMessages = [];
         this.messagesService.getAll()
             .then(messages => {
                 for (let message of messages)
@@ -84,5 +84,19 @@ export class MessagesComponent implements OnInit {
                 this.loadingMessages = false;
             })
             .catch(throwable => {this.loadingMessages = false;});
+    }
+
+    readMessage(message: Message)
+    {
+        message.Readed = true;
+        this.messagesService.update(message).subscribe(
+                    data => {
+                        this.alertService.success("Message readed");
+                        this.router.navigate(['/messages']);
+                    },
+                    error => {
+                        this.alertService.error("Error while trying to read message.");
+                        this.router.navigate(['/messages']);
+                    });
     }
 }
